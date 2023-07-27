@@ -1,8 +1,8 @@
 import { generateRangeDatesFromYearsStart } from '../utils/generate-range-between-dates';
 
-import {useState, useEffect} from 'react'
+import {useState, useCallback, useEffect} from 'react'
 import { View, Text, ScrollView, Alert } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import dayjs from 'dayjs';
 
@@ -43,12 +43,10 @@ export function HabitHome(){
             setLoading(true);
             
             const response = await api.get('/summary')
-            console.log(response.data)
-
             setSummary(response.data)
 
         }catch(error){
-            Alert.alert('Ops!', 'Não foi possivel carregar dados do servidor.');
+            Alert.alert('Opa!', 'Não foi possivel carregar dados do servidor.');
             console.log(error)
             
         }finally{
@@ -57,10 +55,9 @@ export function HabitHome(){
         }
     }
 
-
-    useEffect(()=> {
+    useFocusEffect(useCallback(()=> {
         fetchData();
-    }, [])
+    }, []))
 
 
     if(loading){
@@ -68,9 +65,6 @@ export function HabitHome(){
             <Loading/>
         );
     }
-
-    
-
 
     return (
         <View className="flex-1 bg-background px-8 pt-16" >
@@ -107,7 +101,7 @@ export function HabitHome(){
                                 return (
                                     <HabitDay key={date.toISOString()}
                                               date={date}
-                                              amoutOfHabits={dayWithHabits?.disponiveis}
+                                              amountOfHabits={dayWithHabits?.disponiveis}
                                               amountCompleted={dayWithHabits?.completos}
                                               onPress={() => navigate('habit', {date : date.toISOString()} )}
                                     />

@@ -25,7 +25,8 @@ const port = 3333
 //Inicia a escuta do servidor na porta 3333
 app.listen({
     port: port,
+    host: '0.0.0.0'
 }).then(() => {
     //Caso esteja rodando informa no terminal um aviso de confirmação.
-    console.log("Servidor HTTP Rodando :" + port)
+    console.log("Servidor HTTP Rodando :" + '0.0.0.0' + '/' + port)
 } )

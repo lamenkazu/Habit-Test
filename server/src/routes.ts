@@ -22,7 +22,7 @@ export async function appRoutes(app: FastifyInstance ){
 
 
         //Como o que importa é apenas o Dia, e não o horario, ele zera o horario para não existir conflitos de uso de um novo habito criado
-        const hoje = dayjs().startOf('day').toDate()
+        const hoje = dayjs().toDate()
 
         //Cria o novo hábito com o título que vem do req.body (front-end) E também os Dias da Semana (WeekDays) em que ele ocorre
         await prisma.habit.create({
@@ -58,7 +58,7 @@ export async function appRoutes(app: FastifyInstance ){
             where: {
                 created_at: {
                     //lte (menor ou igual)
-                    lte: date, 
+                    lte: dayjs(date).toDate(),
                 }, 
                 weekDays: {
                     // every, none ou some busca caso haja todos, nenhum ou algum preenche os requisitos que eu coloco.
@@ -93,11 +93,12 @@ export async function appRoutes(app: FastifyInstance ){
             return dayHabit.habit_id
         })
 
+        
 
 
         return {
             habitosPossiveis,
-            completedHabits
+            completedHabits,
         }
 
     })
